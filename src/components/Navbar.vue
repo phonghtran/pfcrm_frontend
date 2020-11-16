@@ -1,10 +1,9 @@
 <template>
   <div>
     <router-link to="/">Home</router-link> |
-    <router-link to="/debug">Debug</router-link> |<router-link to="/frequency"
-      >Frequency</router-link
-    >
-    | <router-link to="/users">users</router-link>
+    <router-link to="/debug">Debug</router-link> |
+    <router-link to="/frequency">Frequency</router-link> |
+    <router-link to="/users">Users</router-link>
     |
     <a @click.prevent="signOut" href="#">Sign out</a> |
     <input
@@ -14,7 +13,7 @@
       v-model="scrambleNamesFlag"
       @change="switchScrambleNames"
     />
-    <label for="scrambleNames">scrambleNames</label> {{ shuffleName }}
+    <label for="scrambleNames">Scramble Names</label>
   </div>
 </template>
 

@@ -8,6 +8,7 @@
         Timeframe:
 
         <input
+          class="filter__rangeTimeframe"
           type="range"
           id="volume"
           name="volume"
@@ -52,7 +53,19 @@
         return this.calculateRowHeight(this.usersByCountTotal.length) + "px";
       },
       dateIntervals: function() {
-        const dateFormat = "MM-DD";
+        let dateFormat = "MM-DD";
+
+        if (this.timeFrameInSeconds <= 86400) {
+          dateFormat = "h:mma";
+        } else if (
+          this.timeFrameInSeconds > 86400 &&
+          this.timeFrameInSeconds < 10 * 86400
+        ) {
+          dateFormat = "Do h:mma";
+        } else if (this.timeFrameInSeconds > 10 * 30 * 86400) {
+          dateFormat = "MMM YYYY";
+        }
+
         const maxTimeValue = moment().unix();
         const intervals = [moment(maxTimeValue, "X").format(dateFormat)];
 
@@ -207,6 +220,11 @@
       top: 0;
       width: 100%;
     }
+
+    &__rangeTimeframe {
+      width: 50vw;
+    }
+
     &__timeline {
       display: flex;
 

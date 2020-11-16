@@ -19,7 +19,7 @@ const users = {
       loggedIn: false,
       data: null,
     },
-    shuffleName: true,
+    shuffleName: false,
     users: [],
     usersByCountTotal: [],
     usersListenerIsOn: false,
