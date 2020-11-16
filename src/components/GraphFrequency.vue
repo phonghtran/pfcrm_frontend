@@ -2,7 +2,7 @@
   <div>
     <h1>Most Interactions</h1>
     <p>Users: {{ usersByCountTotal.length }}</p>
-    <p>
+    <p class="filter__container">
       Timeframe:
 
       <input
@@ -13,7 +13,18 @@
         max="365"
         v-model="timeFrameInDays"
       />
-      {{ timeFrameInDays }} days
+      {{ timeFrameInDays }} days | Height:
+
+      <input
+        type="range"
+        id="volume"
+        name="volume"
+        min="34"
+        max="35"
+        step="0.01"
+        v-model="rowHeight"
+      />
+      {{ rowHeight }} pixels
     </p>
 
     <div class="graph__container">
@@ -46,7 +57,7 @@
         usersByCountTotal: "usersByCountTotal",
       }),
       canvasHeight: function() {
-        return this.usersByCountTotal.length * 36 + this.dotRadius * 3 + "px";
+        return this.calculateRowHeight(this.usersByCountTotal.length) + "px";
       },
       sortByCountTotal: function() {
         let newList = this.usersByCountTotal.slice();
@@ -60,9 +71,12 @@
       },
     },
     data: function() {
-      return { timeFrameInDays: 14, dotRadius: 5 };
+      return { timeFrameInDays: 30, dotRadius: 5, rowHeight: 34 };
     },
     watch: {
+      rowHeight: function() {
+        this.renderGraph();
+      },
       timeFrameInDays: function() {
         this.renderGraph();
       },
@@ -74,6 +88,11 @@
     },
     mounted: function() {
       this.renderGraph();
+      window.addEventListener("resize", this.renderGraph);
+    },
+    beforeDestroy() {
+      // Unregister the event listener before destroying this Vue instance
+      window.removeEventListener("resize", this.renderGraph);
     },
     methods: {
       renderGraph: function() {
@@ -124,7 +143,7 @@
                   this.timeFrameInSeconds;
 
                 const x = timePercentage * xWidth + xMargin;
-                const y = userRowOffset * 36 + this.dotRadius * 3;
+                const y = this.calculateRowHeight(userRowOffset);
 
                 ctx.beginPath();
                 ctx.arc(x, y, this.dotRadius, 0, endAngle);
@@ -135,6 +154,9 @@
           } // row users
         } // has context
       }, // render graph
+      calculateRowHeight: function(userOffset) {
+        return userOffset * this.rowHeight + 20;
+      },
     },
   };
 </script>
@@ -154,5 +176,10 @@
 
       width: 80vw;
     }
+  }
+
+  .filter__container {
+    position: sticky;
+    top: 0;
   }
 </style>

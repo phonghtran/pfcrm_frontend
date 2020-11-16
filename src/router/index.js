@@ -7,6 +7,7 @@ import Debug from "@/views/Debug";
 import Frequency from "@/views/Frequency.vue";
 import Home from "@/views/Home.vue";
 import Login from "@/views/Login";
+import Users from "@/views/Users";
 
 Vue.use(VueRouter);
 
@@ -39,6 +40,14 @@ const routes = [
     path: "/login",
     name: "login",
     component: Login,
+  },
+  {
+    path: "/users",
+    name: "Users",
+    component: Users,
+    meta: {
+      requiresAuth: true,
+    },
   },
 ];
 
