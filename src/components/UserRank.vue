@@ -5,7 +5,7 @@
 
     <table>
       <tr v-for="user in usersByCountTotal" v-bind:key="user.userID">
-        <td>{{ user.name }}</td>
+        <td>{{ shuffleName ? user.shuffledName : user.name }}</td>
         <td>{{ user.countTotal }}</td>
         <td>{{ user.lastInteraction | firestoreDateConvert }}</td>
         <td>{{ user.count }}</td>
@@ -23,8 +23,8 @@
       // map `this.user` to `this.$store.getters.user`
       ...mapGetters({
         currentUser: "currentUser",
+        shuffleName: "shuffleName",
         usersListenerIsOn: "usersListenerIsOn",
-
         usersByCountTotal: "usersByCountTotal",
       }),
     },

@@ -2,43 +2,34 @@
   <div>
     <h1>Most Interactions</h1>
     <p>Users: {{ usersByCountTotal.length }}</p>
-    <p class="filter__container">
-      Timeframe:
 
-      <input
-        type="range"
-        id="volume"
-        name="volume"
-        min="1"
-        max="365"
-        v-model="timeFrameInDays"
-      />
-      {{ timeFrameInDays }} days | Height:
+    <div class="filter__container">
+      <div>
+        Timeframe:
 
-      <input
-        type="range"
-        id="volume"
-        name="volume"
-        min="34"
-        max="35"
-        step="0.01"
-        v-model="rowHeight"
-      />
-      {{ rowHeight }} pixels
-    </p>
-
-    <div class="graph__container">
-      <div class="graph__names">
-        <p v-for="user in usersByCountTotal" v-bind:key="user.userID">
-          {{ user.name }}
-        </p>
+        <input
+          type="range"
+          id="volume"
+          name="volume"
+          min="1"
+          max="365"
+          v-model="timeFrameInDays"
+        />
+        {{ timeFrameInDays }} days
       </div>
-      <canvas
-        id="canvas"
-        class="graph__canvas"
-        v-bind:style="{ height: canvasHeight }"
-      ></canvas>
+
+      <div class="filter__timeline">
+        <div v-for="(interval, index) in dateIntervals" v-bind:key="index">
+          {{ interval }}
+        </div>
+      </div>
     </div>
+
+    <canvas
+      id="canvas"
+      class="graph__canvas"
+      v-bind:style="{ height: canvasHeight }"
+    ></canvas>
   </div>
 </template>
 
@@ -53,11 +44,25 @@
       ...mapGetters({
         currentUser: "currentUser",
         usersListenerIsOn: "usersListenerIsOn",
-
         usersByCountTotal: "usersByCountTotal",
+        shuffleName: "shuffleName",
       }),
+
       canvasHeight: function() {
         return this.calculateRowHeight(this.usersByCountTotal.length) + "px";
+      },
+      dateIntervals: function() {
+        const dateFormat = "MM-DD";
+        const maxTimeValue = moment().unix();
+        const intervals = [moment(maxTimeValue, "X").format(dateFormat)];
+
+        for (var i = 1; i < 10; i++) {
+          const p = this.timeFrameInSeconds * (i / 10);
+
+          intervals.push(moment(maxTimeValue - p, "X").format(dateFormat));
+        }
+
+        return intervals;
       },
       sortByCountTotal: function() {
         let newList = this.usersByCountTotal.slice();
@@ -75,6 +80,9 @@
     },
     watch: {
       rowHeight: function() {
+        this.renderGraph();
+      },
+      shuffleName: function() {
         this.renderGraph();
       },
       timeFrameInDays: function() {
@@ -118,11 +126,27 @@
           const endAngle = Math.PI + (Math.PI * 3) / 2; // End point on circle
 
           const maxTimeValue = moment().unix();
-          maxTimeValue;
+
           const minTimeValue = maxTimeValue - this.timeFrameInSeconds;
 
           const xMargin = canvaswidth * 0.01;
           const xWidth = canvaswidth * 0.98;
+
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(0, canvasheight);
+          ctx.strokeStyle = "rgba(255, 0, 0, 0.5)";
+          ctx.stroke();
+
+          for (var i = 1; i <= 10; i++) {
+            const x = (i / 10) * canvaswidth;
+
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, canvasheight);
+            ctx.strokeStyle = "rgba(255, 0, 0, 0.5)";
+            ctx.stroke();
+          }
 
           for (
             var userRowOffset = 0;
@@ -132,6 +156,15 @@
             const interactions = this.usersByCountTotal[userRowOffset][
               "interactions"
             ];
+            const name = this.shuffleName
+              ? this.usersByCountTotal[userRowOffset]["shuffledName"]
+              : this.usersByCountTotal[userRowOffset]["name"];
+
+            const y = this.calculateRowHeight(userRowOffset);
+
+            ctx.font = "18px serif";
+            ctx.fillStyle = "rgba(0, 0, 0, 1)";
+            ctx.fillText(name, 0, y);
 
             for (var xOffset = 0; xOffset < interactions.length; xOffset++) {
               if (
@@ -143,10 +176,9 @@
                   this.timeFrameInSeconds;
 
                 const x = timePercentage * xWidth + xMargin;
-                const y = this.calculateRowHeight(userRowOffset);
 
                 ctx.beginPath();
-                ctx.arc(x, y, this.dotRadius, 0, endAngle);
+                ctx.arc(x, y + 12, this.dotRadius, 0, endAngle);
                 ctx.fillStyle = "rgba(255, 165, 0, 0.5)";
                 ctx.fill();
               } // if inside the timeframe
@@ -163,23 +195,24 @@
 
 <style scoped lang="scss">
   .graph {
-    &__container {
-      display: flex;
-    }
-
-    &__names {
-      width: 20vw;
-    }
-
     &__canvas {
-      background-color: bisque;
-
-      width: 80vw;
+      width: 100%;
     }
   }
 
-  .filter__container {
-    position: sticky;
-    top: 0;
+  .filter {
+    &__container {
+      background-color: bisque;
+      position: sticky;
+      top: 0;
+      width: 100%;
+    }
+    &__timeline {
+      display: flex;
+
+      div {
+        width: 10%;
+      }
+    }
   }
 </style>

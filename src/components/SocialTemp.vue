@@ -10,7 +10,7 @@
       <h2>{{ categoryName }}</h2>
       <ul>
         <li v-for="user in category" v-bind:key="user.userID">
-          {{ user.name }}
+          {{ shuffleName ? user.shuffledName : user.name }}
         </li>
       </ul>
     </div>
@@ -31,6 +31,7 @@
         users: "users",
         entriesListenerIsOn: "entriesListenerIsOn",
         entries: "entries",
+        shuffleName: "shuffleName",
       }),
 
       usersSortByTemp: function() {

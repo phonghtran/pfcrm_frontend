@@ -6,17 +6,41 @@
     >
     | <router-link to="/users">users</router-link>
     |
-    <a @click.prevent="signOut" href="#">Sign out</a>
+    <a @click.prevent="signOut" href="#">Sign out</a> |
+    <input
+      type="checkbox"
+      id="scrambleNames"
+      name="scrambleNames"
+      v-model="scrambleNamesFlag"
+      @change="switchScrambleNames"
+    />
+    <label for="scrambleNames">scrambleNames</label> {{ shuffleName }}
   </div>
 </template>
 
 <script>
   const fb = require("@/firebaseConfig.js");
+  import { mapGetters } from "vuex";
 
   export default {
     name: "Navbar",
+    computed: {
+      ...mapGetters({
+        currentUser: "currentUser",
+        shuffleName: "shuffleName",
+      }),
+    },
     components: {},
+    data: function() {
+      return { scrambleNamesFlag: false };
+    },
+    mounted: function() {
+      this.scrambleNamesFlag = this.shuffleName;
+    },
     methods: {
+      switchScrambleNames: function() {
+        this.$store.commit("setShuffleName", this.scrambleNamesFlag);
+      },
       signOut: function() {
         fb.auth.signOut().then(() => {
           this.$store.dispatch("resetUser");
