@@ -1,7 +1,10 @@
 <template>
   <div>
     <router-link to="/">Home</router-link> |
-    <router-link to="/debug">Debug</router-link> |
+    <router-link to="/debug">Debug</router-link> |<router-link to="/frequency"
+      >Frequency</router-link
+    >
+    |
     <a @click.prevent="signOut" href="#">Sign out</a>
   </div>
 </template>

@@ -4,8 +4,9 @@ import VueRouter from "vue-router";
 import firebase from "firebase";
 
 import Debug from "@/views/Debug";
-import Login from "@/views/Login";
+import Frequency from "@/views/Frequency.vue";
 import Home from "@/views/Home.vue";
+import Login from "@/views/Login";
 
 Vue.use(VueRouter);
 
@@ -22,6 +23,14 @@ const routes = [
     path: "/debug",
     name: "Debug",
     component: Debug,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/frequency",
+    name: "Frequency",
+    component: Frequency,
     meta: {
       requiresAuth: true,
     },
