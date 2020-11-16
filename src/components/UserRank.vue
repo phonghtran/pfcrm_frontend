@@ -1,10 +1,10 @@
 <template>
   <div>
     <h1>Most Interactions</h1>
-    <p>Users: {{ users.length }}</p>
+    <p>Users: {{ usersByCountTotal.length }}</p>
 
     <table>
-      <tr v-for="user in sortByCountTotal" v-bind:key="user.userID">
+      <tr v-for="user in usersByCountTotal" v-bind:key="user.userID">
         <td>{{ user.name }}</td>
         <td>{{ user.countTotal }}</td>
         <td>{{ user.lastInteraction | firestoreDateConvert }}</td>
@@ -24,15 +24,9 @@
       ...mapGetters({
         currentUser: "currentUser",
         usersListenerIsOn: "usersListenerIsOn",
-        users: "users",
-      }),
-      sortByCountTotal: function() {
-        let newList = this.users.slice();
 
-        return newList.sort(function(a, b) {
-          return b.countTotal - a.countTotal;
-        });
-      },
+        usersByCountTotal: "usersByCountTotal",
+      }),
     },
     created: function() {
       if (this.usersListenerIsOn === false) {

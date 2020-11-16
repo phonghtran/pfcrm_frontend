@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Most Interactions</h1>
-    <p>Users: {{ users.length }}</p>
+    <p>Users: {{ usersByCountTotal.length }}</p>
     <p>
       Timeframe:
 
@@ -18,7 +18,7 @@
 
     <div class="graph__container">
       <div class="graph__names">
-        <p v-for="user in users" v-bind:key="user.userID">
+        <p v-for="user in usersByCountTotal" v-bind:key="user.userID">
           {{ user.name }}
         </p>
       </div>
@@ -42,13 +42,14 @@
       ...mapGetters({
         currentUser: "currentUser",
         usersListenerIsOn: "usersListenerIsOn",
-        users: "users",
+
+        usersByCountTotal: "usersByCountTotal",
       }),
       canvasHeight: function() {
-        return this.users.length * 36 + this.dotRadius * 3 + "px";
+        return this.usersByCountTotal.length * 36 + this.dotRadius * 3 + "px";
       },
       sortByCountTotal: function() {
-        let newList = this.users.slice();
+        let newList = this.usersByCountTotal.slice();
 
         return newList.sort(function(a, b) {
           return b.countTotal - a.countTotal;
@@ -106,10 +107,12 @@
 
           for (
             var userRowOffset = 0;
-            userRowOffset < this.users.length;
+            userRowOffset < this.usersByCountTotal.length;
             userRowOffset++
           ) {
-            const interactions = this.users[userRowOffset]["interactions"];
+            const interactions = this.usersByCountTotal[userRowOffset][
+              "interactions"
+            ];
 
             for (var xOffset = 0; xOffset < interactions.length; xOffset++) {
               if (

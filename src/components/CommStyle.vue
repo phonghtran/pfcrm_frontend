@@ -2,7 +2,7 @@
   <div>
     <h1>Entries</h1>
     <p>Entries: {{ entries.length }}</p>
-    <pre>{{ entriesSortByCategory }}</pre>
+    <pre>{{ entriesByCategory }}</pre>
   </div>
 </template>
 
@@ -18,21 +18,8 @@
 
         entriesListenerIsOn: "entriesListenerIsOn",
         entries: "entries",
+        entriesByCategory: "entriesByCategory",
       }),
-
-      entriesSortByCategory: function() {
-        const counts = {};
-
-        this.entries.forEach((entry) => {
-          if (counts[entry["interaction"]]) {
-            counts[entry["interaction"]]++;
-          } else {
-            counts[entry["interaction"]] = 1;
-          }
-        });
-
-        return counts;
-      },
     },
     created: function() {
       if (this.entriesListenerIsOn === false) {
