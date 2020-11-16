@@ -1,12 +1,13 @@
 <template>
   <div>
-    <h1 v-if="!currentUser.loggedIn">Not signed in</h1>
-    <button @click="login" v-if="!currentUser.loggedIn">Login</button>
     <button @click="addEntry" disabled="disabled">Add User</button>
-    <button @click="addRawEntries">Add Raw Entries</button>
+    <button @click="addRawEntries" disabled="disabled">Add Raw Entries</button>
     <button @click="addBatches" disabled="disabled">Add Batches</button>
+    <button @click="removeEmptyEntries">removeEmptyEntries</button>
 
-    <p><button @click="clearOut">clear</button></p>
+    <p><button @click="clearOut" disabled="disabled">clear</button></p>
+    <h1>Entries</h1>
+    {{ entries }}
 
     <h1>Batches</h1>
     <pre>{{ batches.length }}</pre>
@@ -24,13 +25,15 @@
   const fb = require("@/firebaseConfig.js");
 
   export default {
-    name: "HelloWorld",
+    name: "InitPrep",
     computed: {
       // map `this.user` to `this.$store.getters.user`
       ...mapGetters({
         currentUser: "currentUser",
         usersListenerIsOn: "usersListenerIsOn",
         users: "users",
+        entriesListenerIsOn: "entriesListenerIsOn",
+        entries: "entries",
       }),
       batches: function() {
         let batches = [];
@@ -146,6 +149,9 @@
       if (this.usersListenerIsOn === false) {
         this.$store.dispatch("fetchAllUsers");
       }
+      if (this.entriesListenerIsOn === false) {
+        this.$store.dispatch("fetchAllEntries");
+      }
     },
 
     methods: {
@@ -237,6 +243,7 @@
           .then((res) => console.log("obj updated", res))
           .catch((err) => console.log("Error obj updated", err));
       },
+
       clearOut: function() {
         var clearCollection = fb.db.collection("entries");
         var batch = fb.db.batch();
@@ -276,18 +283,20 @@
               .catch((err) => console.log("Error obj updated", err));
           });
       },
-      login: function() {
-        fb.auth()
-          .signInWithEmailAndPassword(
-            "phong@phonghtran.com",
-            process.env.VUE_APP_LOGIN_PASSWORD
-          )
-          .then(() => {
-            this.$router.replace({ name: "Home" });
-          })
-          .catch((err) => {
-            this.error = err.message;
-          });
+      removeEmptyEntries: function() {
+        var batch = fb.db.batch();
+
+        this.entries.forEach((entry) => {
+          if (entry["interaction"] == "") {
+            const target = fb.entriesCollection.doc(entry.entryID);
+            batch.delete(target);
+          }
+        });
+
+        batch
+          .commit()
+          .then((res) => console.log("obj updated", res))
+          .catch((err) => console.log("Error obj updated", err));
       },
     },
     unmounted: function() {},
