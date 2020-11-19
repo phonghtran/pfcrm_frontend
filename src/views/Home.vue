@@ -5,6 +5,8 @@
     <SocialTemp />
     <CommStyle />
     <UserRank />
+
+    <EntriesList />
   </div>
 </template>
 
@@ -12,11 +14,11 @@
   // @ is an alias to /src
   import UserRank from "@/components/UserRank.vue";
   import CommStyle from "@/components/CommStyle.vue";
-
+  import EntriesList from "@/components/EntriesList.vue";
   import SocialTemp from "@/components/SocialTemp.vue";
 
   export default {
     name: "Home",
-    components: { UserRank, CommStyle, SocialTemp },
+    components: { UserRank, CommStyle, EntriesList, SocialTemp },
   };
 </script>
