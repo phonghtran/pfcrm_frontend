@@ -60,22 +60,37 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 
-  let currentUser;
+  console.log(to);
 
-  if (!localStorage.getItem("loggedIn")) {
-    currentUser = firebase.auth().currentUser;
-  } else {
-    currentUser = localStorage.getItem("loggedIn");
-  }
-  console.log(firebase.auth().currentUser, currentUser, requiresAuth);
+  if (to.query.secretToken === process.env.VUE_APP_SECRET_TOKEN) {
+    console.log("secret token", process.env.VUE_APP_LOGIN_PASSWORD);
 
-  // console.log(to, from, next);
-  if (requiresAuth && !currentUser) {
-    console.log("login");
-    next("login");
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(
+        process.env.VUE_APP_LOGIN_EMAIL,
+        process.env.VUE_APP_LOGIN_PASSWORD
+      )
+      .then(() => {
+        next();
+      })
+      .catch((err) => {
+        this.error = err.message;
+      });
   } else {
-    console.log("pass");
-    next();
+    const currentUser = firebase.auth().currentUser;
+
+    if (requiresAuth && !currentUser) {
+      console.log("login", requiresAuth, currentUser);
+      next("login");
+    } else if (requiresAuth && currentUser) {
+      console.log("middle pass", requiresAuth, currentUser);
+      next();
+    } else {
+      console.log("pass", requiresAuth, currentUser);
+
+      next();
+    }
   }
 });
 

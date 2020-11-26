@@ -65,18 +65,14 @@ const users = {
   actions: {
     resetUser(context) {
       context.commit("setCurrentUser", null);
-
-      localStorage.setItem("loggedIn", false);
     },
     fetchUser(context, user) {
       if (user) {
         context.commit("setCurrentUser", user);
         context.commit("setLoggedIn", true);
-        localStorage.setItem("loggedIn", true);
       } else {
         context.commit("setCurrentUser", null);
         context.commit("setLoggedIn", false);
-        localStorage.setItem("loggedIn", null);
       }
     },
     fetchAllUsers({ commit }) {
