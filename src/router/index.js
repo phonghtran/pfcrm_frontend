@@ -3,9 +3,11 @@ import VueRouter from "vue-router";
 
 import firebase from "firebase";
 
+import Batches from "@/views/Batches";
 import Debug from "@/views/Debug";
 import Frequency from "@/views/Frequency.vue";
 import Home from "@/views/Home.vue";
+import Log from "@/views/Log";
 import Login from "@/views/Login";
 import Users from "@/views/Users";
 
@@ -42,9 +44,25 @@ const routes = [
     component: Login,
   },
   {
+    path: "/log/:name",
+    name: "Log",
+    component: Log,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/users",
     name: "Users",
     component: Users,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/batches",
+    name: "Batches",
+    component: Batches,
     meta: {
       requiresAuth: true,
     },
@@ -60,11 +78,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 
-  console.log(to);
-
   if (to.query.secretToken === process.env.VUE_APP_SECRET_TOKEN) {
-    console.log("secret token", process.env.VUE_APP_LOGIN_PASSWORD);
-
     firebase
       .auth()
       .signInWithEmailAndPassword(
@@ -81,14 +95,10 @@ router.beforeEach((to, from, next) => {
     const currentUser = firebase.auth().currentUser;
 
     if (requiresAuth && !currentUser) {
-      console.log("login", requiresAuth, currentUser);
       next("login");
     } else if (requiresAuth && currentUser) {
-      console.log("middle pass", requiresAuth, currentUser);
       next();
     } else {
-      console.log("pass", requiresAuth, currentUser);
-
       next();
     }
   }

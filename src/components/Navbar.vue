@@ -3,7 +3,9 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/debug">Debug</router-link> |
     <router-link to="/frequency">Frequency</router-link> |
-    <router-link to="/users">Users</router-link>
+    <router-link to="/users">Users</router-link> |
+    <router-link to="/batches">Batches</router-link> |
+    <router-link to="/log">Log</router-link>
     |
     <a @click.prevent="signOut" href="#">Sign out</a> |
     <input

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <button @click="addEntry" disabled="disabled">Add User</button>
-    <button @click="addRawEntries" disabled="disabled">Add Raw Entries</button>
-    <button @click="addBatches" disabled="disabled">Add Batches</button>
+    <button @click="addEntry">Add User</button>
+    <button @click="addRawEntries">Add Raw Entries</button>
+    <button @click="addBatches">Add Batches</button>
     <button @click="removeEmptyEntries">removeEmptyEntries</button>
 
     <p><button @click="clearOut" disabled="disabled">clear</button></p>

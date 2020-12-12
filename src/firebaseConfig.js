@@ -15,7 +15,9 @@ firebase.initializeApp(configOptions);
 
 // firebase utils
 const db = firebase.firestore();
+
 const auth = firebase.auth();
+
 const currentUser = auth.currentUser;
 
 const fieldValue = firebase.firestore.FieldValue;
@@ -24,6 +26,7 @@ const timestamp = firebase.firestore.Timestamp;
 // firebase collections
 const usersCollection = db.collection("users");
 const entriesCollection = db.collection("entries");
+const batchesCollection = db.collection("batches");
 
 export {
   db,
@@ -31,6 +34,7 @@ export {
   fieldValue,
   timestamp,
   currentUser,
+  batchesCollection,
   usersCollection,
   entriesCollection,
 };

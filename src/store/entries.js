@@ -27,41 +27,43 @@ const entries = {
     },
   },
   actions: {
-    fetchAllEntries({ commit }) {
-      fb.entriesCollection
-        .orderBy("loggedDate", "desc")
-        .get()
-        .then((querySnapshot) => {
-          let tempContainer = [];
-          let categoryContainer = {};
+    fetchAllEntries({ state, commit }) {
+      if (state.entries.length === 0) {
+        console.log("fetching entries");
+        fb.entriesCollection
+          .orderBy("loggedDate", "desc")
+          .get()
+          .then((querySnapshot) => {
+            let tempContainer = [];
+            let categoryContainer = {};
 
-          querySnapshot.forEach(function(doc) {
-            tempContainer[doc.id] = doc.data();
-            let obj = doc.data();
+            querySnapshot.forEach(function(doc) {
+              tempContainer[doc.id] = doc.data();
+              let obj = doc.data();
 
-            obj = {
-              ...obj,
-              entryID: doc.id,
-            };
+              obj = {
+                ...obj,
+                entryID: doc.id,
+              };
 
-            tempContainer.push(obj);
+              tempContainer.push(obj);
 
-            //for category
-            const interaction = tempContainer[doc.id]["interaction"];
-            if (categoryContainer[interaction]) {
-              categoryContainer[interaction]++;
-            } else {
-              categoryContainer[interaction] = 1;
-            }
+              //for category
+              const interaction = tempContainer[doc.id]["interaction"];
+              if (categoryContainer[interaction]) {
+                categoryContainer[interaction]++;
+              } else {
+                categoryContainer[interaction] = 1;
+              }
+            });
+
+            commit("setEntries", tempContainer);
+            commit("setEntriesByCategory", categoryContainer);
+          })
+          .catch((err) => {
+            this.error = err.message;
           });
-          console.log(categoryContainer);
-
-          commit("setEntries", tempContainer);
-          commit("setEntriesByCategory", categoryContainer);
-        })
-        .catch((err) => {
-          this.error = err.message;
-        });
+      }
     },
   },
   modules: {},
