@@ -8,6 +8,7 @@
       v-bind:key="batch.batchID"
     >
       <p>{{ batch.batchID }}</p>
+      <p>Count: {{ batch.count }}</p>
 
       <p>{{ batch.loggedDate | firestoreDateConvert }}</p>
       <div v-for="(user, userID) in batch.users" v-bind:key="userID">

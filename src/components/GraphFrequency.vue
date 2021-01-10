@@ -3,6 +3,54 @@
     <h1>Most Interactions</h1>
     <p>Users: {{ usersByCountTotal.length }}</p>
 
+    <span
+      class="legendColor"
+      style="background-color:rgba(255, 165, 0, 0.5)"
+    ></span>
+    Message
+
+    <span
+      class="legendColor"
+      style="background-color:rgba(168, 89, 255, 0.5)"
+    ></span>
+    Call
+
+    <span
+      class="legendColor"
+      style="background-color:rgba(255, 219,13, 0.5)"
+    ></span>
+    Email
+
+    <span
+      class="legendColor"
+      style="background-color:rgba(96, 255, 65, 0.5)"
+    ></span>
+    Video
+
+    <span
+      class="legendColor"
+      style="background-color:rgba(255, 43, 40, 0.5)"
+    ></span>
+    In-Person
+
+    <span
+      class="legendColor"
+      style="background-color:rgba(81, 125, 255, 0.5)"
+    ></span>
+    Extended Hang
+
+    <span
+      class="legendColor"
+      style="background-color:rgba(25, 247, 255, 0.5)"
+    ></span>
+    Mail
+
+    <span
+      class="legendColor"
+      style="background-color:rgba(255, 41, 157, 0.5)"
+    ></span>
+    Attempted Call
+
     <div class="filter__container">
       <div>
         Timeframe:
@@ -192,7 +240,45 @@
 
                 ctx.beginPath();
                 ctx.arc(x, y + 12, this.dotRadius, 0, endAngle);
-                ctx.fillStyle = "rgba(255, 165, 0, 0.5)";
+
+                switch (interactions[xOffset]["interaction"]) {
+                  case "Message":
+                    ctx.fillStyle = "rgba(255, 165, 0, 0.5)";
+                    break;
+
+                  case "Call":
+                    ctx.fillStyle = "rgba(168, 89, 255, 0.5)";
+                    break;
+
+                  case "Email":
+                    ctx.fillStyle = "rgba(255, 219,13, 0.5)";
+                    break;
+
+                  case "Video":
+                    ctx.fillStyle = "rgba(96, 255, 65, 0.5)";
+                    break;
+
+                  case "In-Person":
+                    ctx.fillStyle = "rgba(255, 43, 40, 0.5)";
+                    break;
+
+                  case "Extended Hang":
+                    ctx.fillStyle = "rgba(81, 125, 255, 0.5)";
+
+                    break;
+
+                  case "Mail":
+                    ctx.fillStyle = "rgba(25, 247, 255, 0.5)";
+                    break;
+
+                  case "Attempted Call":
+                    ctx.fillStyle = "rgba(255, 41, 157, 0.5)";
+                    break;
+
+                  default:
+                    ctx.fillStyle = "rgba(0, 165, 255, 0.5)";
+                }
+
                 ctx.fill();
               } // if inside the timeframe
             } // for
@@ -207,6 +293,13 @@
 </script>
 
 <style scoped lang="scss">
+  .legendColor {
+    border-radius: 1rem;
+    display: inline-block;
+    height: 1rem;
+    width: 1rem;
+  }
+
   .graph {
     &__canvas {
       width: 100%;
