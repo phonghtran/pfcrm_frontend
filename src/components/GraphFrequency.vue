@@ -94,7 +94,7 @@
         currentUser: "currentUser",
         usersListenerIsOn: "usersListenerIsOn",
         usersByCountTotal: "usersByCountTotal",
-        shuffleName: "shuffleName",
+        scrambledName: "scrambledName",
       }),
 
       canvasHeight: function() {
@@ -143,7 +143,7 @@
       rowHeight: function() {
         this.renderGraph();
       },
-      shuffleName: function() {
+      scrambledName: function() {
         this.renderGraph();
       },
       timeFrameInDays: function() {
@@ -217,8 +217,11 @@
             const interactions = this.usersByCountTotal[userRowOffset][
               "interactions"
             ];
-            const name = this.shuffleName
-              ? this.usersByCountTotal[userRowOffset]["shuffledName"]
+            const name = this.scrambledName
+              ? this.$options.filters.scrambleName(
+                  this.usersByCountTotal[userRowOffset]["name"],
+                  true
+                )
               : this.usersByCountTotal[userRowOffset]["name"];
 
             const y = this.calculateRowHeight(userRowOffset);

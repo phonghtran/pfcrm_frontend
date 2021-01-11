@@ -4,8 +4,8 @@
     <p>Users: {{ users.length }}</p>
 
     <div class="" v-for="user in users" v-bind:key="user.userID">
-      <h3>{{ user.name }}</h3>
-      <h4>{{ user.userID }} // {{ user.shuffledName }}</h4>
+      <h3>{{ user.name | scrambleName(scrambledName) }}</h3>
+      <h4>{{ user.userID }} // {{ user.scrambledName }}</h4>
       <h4>count total</h4>
       <p>{{ user.countTotal }}</p>
       <h4>count</h4>
@@ -38,7 +38,7 @@
       // map `this.user` to `this.$store.getters.user`
       ...mapGetters({
         currentUser: "currentUser",
-
+        scrambledName: "scrambledName",
         usersListenerIsOn: "usersListenerIsOn",
         users: "users",
       }),

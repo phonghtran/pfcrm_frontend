@@ -1,23 +1,32 @@
 <template>
   <div>
-    <h1>Social Temp</h1>
+    <h2>Social Temp</h2>
     <p>Users: {{ users.length }}</p>
 
-    <div
+    <b-card
       v-for="(category, categoryName) in usersSortByTemp"
       v-bind:key="categoryName"
     >
-      <h2>{{ categoryName }}</h2>
-      <p>{{ category.label }}</p>
-      <ul class="container d-flex">
-        <li class="" v-for="user in category.items" v-bind:key="user.userID">
-          <router-link v-if="!shuffleName" :to="`/log/${user.name}`">{{
-            user.name
-          }}</router-link>
-          <span v-if="shuffleName"> user.shuffledName</span>
-        </li>
-      </ul>
-    </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-12 ">
+            <h3>{{ categoryName }}</h3>
+
+            <h5>{{ category.label }}</h5>
+          </div>
+        </div>
+
+        <div class="row">
+          <div
+            class="col-12 col-md-3"
+            v-for="user in category.items"
+            v-bind:key="user.userID"
+          >
+            {{ user.name | scrambleName(scrambledName) }}
+          </div>
+        </div>
+      </div>
+    </b-card>
   </div>
 </template>
 
@@ -35,7 +44,7 @@
         users: "users",
         entriesListenerIsOn: "entriesListenerIsOn",
         entries: "entries",
-        shuffleName: "shuffleName",
+        scrambledName: "scrambledName",
       }),
 
       usersSortByTemp: function() {
@@ -100,15 +109,7 @@
 </script>
 
 <style scoped lang="scss">
-  ul {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0;
-    padding: 0;
-
-    li {
-      display: inline;
-      flex: 200px;
-    }
+  .card {
+    margin-bottom: 1rem;
   }
 </style>

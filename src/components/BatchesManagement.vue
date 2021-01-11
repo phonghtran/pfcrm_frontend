@@ -1,32 +1,40 @@
 <template>
-  <div>
-    <h1>batches</h1>
-    <p>batches: {{ batches.length }}</p>
-    <div
-      class="cardBatches__container"
-      v-for="(batch, index) in batches"
-      v-bind:key="batch.batchID"
-    >
-      <p>{{ batch.batchID }}</p>
-      <p>Count: {{ batch.count }}</p>
-
-      <p>{{ batch.loggedDate | firestoreDateConvert }}</p>
-      <div v-for="(user, userID) in batch.users" v-bind:key="userID">
-        <p>
-          {{ user.name }}
-
-          <button @click="deletePerson(batch.batchID, userID)">Remove</button>
-        </p>
-      </div>
-
-      <input
-        type="checkbox"
-        v-bind:id="'locked' + index"
-        v-model="batch.locked"
-        @click="lockBatch(batch.batchID, $event)"
-      />
-      <label v-bind:for="'locked' + index">locked</label>
+  <div class="container">
+    <div class="row">
+      <p>Count: {{ batches.length }}</p>
     </div>
+    <div class="row">
+      <b-card
+        class="col-12 col-md-4"
+        v-for="(batch, index) in batches"
+        v-bind:key="batch.batchID"
+      >
+        <p>{{ batch.batchID }}</p>
+        <p>Count: {{ batch.count }}</p>
+
+        <p>{{ batch.loggedDate | firestoreDateConvert }}</p>
+        <div v-for="(user, userID) in batch.users" v-bind:key="userID">
+          <p>
+            {{ user.name | scrambleName(scrambledName) }}
+            <b-button
+              @click="deletePerson(batch.batchID, userID)"
+              size="sm"
+              variant="outline-secondary"
+              >Remove</b-button
+            >
+          </p>
+        </div>
+
+        <input
+          type="checkbox"
+          v-bind:id="'locked' + index"
+          v-model="batch.locked"
+          @click="lockBatch(batch.batchID, $event)"
+        />
+        <label v-bind:for="'locked' + index">Locked</label>
+      </b-card>
+    </div>
+    <!-- row -->
   </div>
 </template>
 
@@ -39,10 +47,10 @@
     computed: {
       // map `this.user` to `this.$store.getters.user`
       ...mapGetters({
-        currentUser: "currentUser",
-
         batchesListenerIsOn: "batchesListenerIsOn",
         batches: "batches",
+        currentUser: "currentUser",
+        scrambledName: "scrambledName",
       }),
     },
     created: function() {
@@ -93,10 +101,4 @@
   };
 </script>
 
-<style lang="scss">
-  .cardBatches {
-    &__container {
-      border: 1px black solid;
-    }
-  }
-</style>
+<style lang="scss"></style>

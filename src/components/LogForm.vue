@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span v-if="shuffleName"> Disable this</span>
+    <span v-if="scrambledName"> Disable this</span>
     <input type="text" v-model="newEntry.name" />
 
     <p>
@@ -83,7 +83,7 @@
     computed: {
       ...mapGetters({
         currentUser: "currentUser",
-        shuffleName: "shuffleName",
+        scrambledName: "scrambledName",
       }),
     },
     components: {},

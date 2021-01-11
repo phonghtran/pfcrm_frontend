@@ -2,7 +2,7 @@
   <div id="app">
     <Navbar />
 
-    <router-view />
+    <div class="container"><router-view /></div>
   </div>
 </template>
 <script>
