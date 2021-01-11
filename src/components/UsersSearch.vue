@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Users</h1>
     <p>Users: {{ users.length }}</p>
 
     <div class="" v-for="user in users" v-bind:key="user.userID">

@@ -6,7 +6,7 @@
     <div class="row">
       <b-card
         class="col-12 col-md-4"
-        v-for="(batch, index) in batches"
+        v-for="(batch, index) in batchesSortedByCount"
         v-bind:key="batch.batchID"
       >
         <p>{{ batch.batchID }}</p>
@@ -52,6 +52,17 @@
         currentUser: "currentUser",
         scrambledName: "scrambledName",
       }),
+      batchesSortedByCount: function() {
+        let batches = [...this.batches];
+
+        batches.sort(function(a, b) {
+          let c = a.count ? a.count : 0;
+          let d = b.count ? b.count : 0;
+          return d - c;
+        });
+
+        return batches;
+      },
     },
     created: function() {
       if (this.batchesListenerIsOn === false) {
