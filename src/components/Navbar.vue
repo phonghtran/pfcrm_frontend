@@ -1,5 +1,5 @@
 <template>
-  <b-navbar toggleable="sm" sticky="true">
+  <b-navbar toggleable="sm" sticky>
     <b-navbar-brand href="#">PFCRM</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -81,4 +81,8 @@
     },
   };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+  .navbar {
+    background-color: white;
+  }
+</style>

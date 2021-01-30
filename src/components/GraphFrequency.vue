@@ -167,13 +167,15 @@
       renderGraph: function() {
         var canvas = document.getElementById("canvas");
 
-        const dpi = window.devicePixelRatio;
+        const dpi = 1; //window.devicePixelRatio;
         const canvasheight = +getComputedStyle(canvas)
           .getPropertyValue("height")
           .slice(0, -2);
         const canvaswidth = +getComputedStyle(canvas)
           .getPropertyValue("width")
           .slice(0, -2);
+
+        // console.log("dpi", dpi, "width", canvaswidth, "height", canvasheight);
 
         //scale the canvas
         canvas.setAttribute("height", canvasheight * dpi);
